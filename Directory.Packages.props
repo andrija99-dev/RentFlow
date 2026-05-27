@@ -13,6 +13,14 @@
   <ItemGroup Label="Microsoft.Extensions (framework abstractions)">
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.3" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.3" />
+  </ItemGroup>
+
+  <ItemGroup Label="Application (CQRS, validation, mapping)">
+    <PackageVersion Include="MediatR" Version="12.4.1" />
+    <PackageVersion Include="FluentValidation" Version="11.11.0" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
+    <PackageVersion Include="AutoMapper" Version="15.1.3" />
   </ItemGroup>
 
   <ItemGroup Label="API host">
