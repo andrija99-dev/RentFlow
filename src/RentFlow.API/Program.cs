@@ -1,5 +1,6 @@
 using RentFlow.Application;
 using RentFlow.Infrastructure;
+using RentFlow.Infrastructure.Persistence;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -25,6 +26,8 @@ try
     builder.Services.AddHealthChecks();
 
     var app = builder.Build();
+
+    await app.ApplyDatabaseMigrationsAsync();
 
     app.UseSerilogRequestLogging();
 
