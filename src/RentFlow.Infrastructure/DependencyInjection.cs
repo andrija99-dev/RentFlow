@@ -1,7 +1,11 @@
+using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RentFlow.Application.Abstractions.Identity;
 using RentFlow.Domain.Interfaces;
+using RentFlow.Infrastructure.Identity;
 using RentFlow.Infrastructure.Persistence;
 using RentFlow.Infrastructure.Persistence.Repositories;
 
@@ -39,6 +43,46 @@ public static class DependencyInjection
         services.AddScoped<IContractRepository, ContractRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IWebhookSubscriptionRepository, WebhookSubscriptionRepository>();
+
+        services.AddAuthenticationServices(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddAuthenticationServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var jwtSection = configuration.GetSection(JwtOptions.SectionName);
+        services.Configure<JwtOptions>(jwtSection);
+
+        var jwtOptions = jwtSection.Get<JwtOptions>()
+            ?? throw new InvalidOperationException(
+                $"The '{JwtOptions.SectionName}' configuration section is missing.");
+
+        if (string.IsNullOrWhiteSpace(jwtOptions.SigningKey)
+            || Encoding.UTF8.GetByteCount(jwtOptions.SigningKey) < 32)
+        {
+            throw new InvalidOperationException(
+                $"'{JwtOptions.SectionName}:{nameof(JwtOptions.SigningKey)}' must be configured "
+                + "and at least 32 bytes long for HMAC-SHA256 signing.");
+        }
+
+        services.AddIdentityCore<ApplicationUser>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+            .AddRoles<ApplicationRole>()
+            .AddEntityFrameworkStores<RentFlowDbContext>();
+
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddSingleton<JwtTokenGenerator>();
 
         return services;
     }

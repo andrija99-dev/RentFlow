@@ -1,5 +1,8 @@
+using RentFlow.API.Extensions;
+using RentFlow.API.Middleware;
 using RentFlow.Application;
 using RentFlow.Infrastructure;
+using RentFlow.Infrastructure.Identity;
 using RentFlow.Infrastructure.Persistence;
 using Scalar.AspNetCore;
 using Serilog;
@@ -20,15 +23,21 @@ try
 
     builder.Services.AddApplication();
     builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddJwtAuthentication(builder.Configuration);
 
     builder.Services.AddControllers();
     builder.Services.AddOpenApi();
     builder.Services.AddHealthChecks();
 
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+    builder.Services.AddProblemDetails();
+
     var app = builder.Build();
 
     await app.ApplyDatabaseMigrationsAsync();
+    await app.SeedIdentityAsync();
 
+    app.UseExceptionHandler();
     app.UseSerilogRequestLogging();
 
     if (app.Environment.IsDevelopment())
@@ -38,6 +47,7 @@ try
     }
 
     app.UseHttpsRedirection();
+    app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapControllers();

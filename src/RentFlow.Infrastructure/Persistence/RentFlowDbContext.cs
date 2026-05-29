@@ -1,15 +1,17 @@
 using MediatR;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RentFlow.Application.DomainEvents;
 using RentFlow.Domain.Common;
 using RentFlow.Domain.Entities;
+using RentFlow.Infrastructure.Identity;
 
 namespace RentFlow.Infrastructure.Persistence;
 
 /// <inheritdoc />
 public sealed class RentFlowDbContext(
     DbContextOptions<RentFlowDbContext> options,
-    IPublisher publisher) : DbContext(options)
+    IPublisher publisher) : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
 {
     private readonly IPublisher _publisher = publisher;
 
@@ -28,11 +30,14 @@ public sealed class RentFlowDbContext(
     /// <summary>Gets the set of webhook subscriptions.</summary>
     public DbSet<WebhookSubscription> WebhookSubscriptions => Set<WebhookSubscription>();
 
+    /// <summary>Gets the set of issued refresh tokens.</summary>
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RentFlowDbContext).Assembly);
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(RentFlowDbContext).Assembly);
     }
 
     /// <inheritdoc />
