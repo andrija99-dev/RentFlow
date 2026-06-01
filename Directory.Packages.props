@@ -26,6 +26,10 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.4" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
   </ItemGroup>
+  <ItemGroup Label="Read side (Dapper) + caching (Redis)">
+    <PackageVersion Include="Dapper" Version="2.1.66" />
+    <PackageVersion Include="StackExchange.Redis" Version="2.8.41" />
+  </ItemGroup>
   <ItemGroup Label="Authentication (ASP.NET Identity + JWT)">
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.4" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.4" />
