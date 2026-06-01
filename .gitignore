@@ -186,6 +186,8 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
+# ...but not source feature folders named Publish (case-insensitive match on Windows)
+!/src/**/Publish/
 
 # Publish Web Output
 *.[Pp]ublish.xml

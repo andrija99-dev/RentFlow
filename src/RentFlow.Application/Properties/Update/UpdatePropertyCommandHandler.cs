@@ -26,7 +26,7 @@ internal sealed class UpdatePropertyCommandHandler(
         var property = await _properties.GetByIdAsync(request.PropertyId, cancellationToken)
             ?? throw new NotFoundException(nameof(Property), request.PropertyId);
 
-        PropertyAuthorization.EnsureCanManage(property, _currentUser);
+        PropertyAuthorization.EnsureCanManage(property.OwnerId, _currentUser);
 
         var address = Address.Create(request.Street, request.City, request.PostalCode, request.Country);
         var price = Money.Create(request.PriceAmount, request.PriceCurrency);

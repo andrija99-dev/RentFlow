@@ -59,6 +59,19 @@ internal sealed class PropertyReadService(ISqlConnectionFactory connectionFactor
     }
 
     /// <inheritdoc />
+    public async Task<Guid?> GetOwnerIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        const string sql = "SELECT \"OwnerId\" FROM \"Properties\" WHERE \"Id\" = @Id;";
+
+        using var connection = await _connectionFactory.CreateOpenConnectionAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        return await connection.ExecuteScalarAsync<Guid?>(
+            new CommandDefinition(sql, new { Id = id }, cancellationToken: cancellationToken))
+            .ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
     public async Task<PagedResult<PropertySummaryResponse>> SearchAsync(
         PropertySearchCriteria criteria,
         CancellationToken cancellationToken = default)
