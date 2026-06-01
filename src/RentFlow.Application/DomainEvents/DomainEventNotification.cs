@@ -9,7 +9,6 @@ namespace RentFlow.Application.DomainEvents;
 /// these after the unit of work commits successfully.
 /// </summary>
 /// <typeparam name="TDomainEvent">The wrapped domain event type.</typeparam>
-/// <param name="domainEvent">The domain event being published.</param>
 public sealed class DomainEventNotification<TDomainEvent>(TDomainEvent domainEvent) : INotification
     where TDomainEvent : IDomainEvent
 {

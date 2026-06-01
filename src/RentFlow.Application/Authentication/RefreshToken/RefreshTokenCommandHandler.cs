@@ -3,7 +3,6 @@ using RentFlow.Application.Abstractions.Messaging;
 
 namespace RentFlow.Application.Authentication.RefreshToken;
 
-/// <summary>Delegates to the token service to validate and rotate the refresh token.</summary>
 internal sealed class RefreshTokenCommandHandler(ITokenService tokenService)
     : ICommandHandler<RefreshTokenCommand, AuthenticationResult>
 {

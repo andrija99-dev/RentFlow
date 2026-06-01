@@ -8,7 +8,6 @@ namespace RentFlow.Domain.ValueObjects;
 /// </summary>
 public sealed class Money : ValueObject
 {
-    /// <summary>The currency used when none is specified.</summary>
     public const string DefaultCurrency = "USD";
 
     private Money(decimal amount, string currency)
@@ -17,16 +16,12 @@ public sealed class Money : ValueObject
         Currency = currency;
     }
 
-    /// <summary>Gets the amount of money.</summary>
     public decimal Amount { get; }
 
     /// <summary>Gets the three-letter ISO-4217 currency code (upper-cased).</summary>
     public string Currency { get; }
 
     /// <summary>Creates a validated <see cref="Money"/> instance.</summary>
-    /// <param name="amount">A non-negative amount.</param>
-    /// <param name="currency">A three-letter ISO-4217 currency code.</param>
-    /// <returns>The created <see cref="Money"/> value.</returns>
     /// <exception cref="DomainException">Thrown when the amount is negative or the currency code is invalid.</exception>
     public static Money Create(decimal amount, string currency = DefaultCurrency)
     {
@@ -44,8 +39,6 @@ public sealed class Money : ValueObject
     }
 
     /// <summary>Returns a zero amount in the specified currency.</summary>
-    /// <param name="currency">A three-letter ISO-4217 currency code.</param>
-    /// <returns>A <see cref="Money"/> value of zero.</returns>
     public static Money Zero(string currency = DefaultCurrency) => Create(0m, currency);
 
     /// <inheritdoc />

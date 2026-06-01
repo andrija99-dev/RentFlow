@@ -29,30 +29,19 @@ public sealed class WebhookSubscription : AggregateRoot
     {
     }
 
-    /// <summary>Gets the identifier of the owner who registered the subscription.</summary>
     public Guid OwnerId { get; private set; }
 
-    /// <summary>Gets the absolute URL that event payloads are delivered to.</summary>
     public string TargetUrl { get; private set; } = null!;
 
-    /// <summary>Gets the shared secret used to sign delivered payloads.</summary>
     public string Secret { get; private set; } = null!;
 
-    /// <summary>Gets the event type this subscription listens for.</summary>
     public WebhookEventType EventType { get; private set; }
 
-    /// <summary>Gets a value indicating whether the subscription currently receives deliveries.</summary>
     public bool IsActive { get; private set; }
 
-    /// <summary>Gets the UTC timestamp at which the subscription was created.</summary>
     public DateTime CreatedAtUtc { get; private set; }
 
     /// <summary>Registers a new active webhook subscription.</summary>
-    /// <param name="ownerId">The registering owner's identifier.</param>
-    /// <param name="targetUrl">The absolute HTTPS URL to deliver payloads to.</param>
-    /// <param name="secret">The shared secret used to sign payloads.</param>
-    /// <param name="eventType">The event type to subscribe to.</param>
-    /// <returns>The created <see cref="WebhookSubscription"/>.</returns>
     /// <exception cref="DomainException">Thrown when the owner, URL or secret is missing or the URL is not absolute.</exception>
     public static WebhookSubscription Create(Guid ownerId, string targetUrl, string secret, WebhookEventType eventType)
     {
@@ -75,7 +64,6 @@ public sealed class WebhookSubscription : AggregateRoot
     }
 
     /// <summary>Updates the delivery URL.</summary>
-    /// <param name="targetUrl">The new absolute URL.</param>
     /// <exception cref="DomainException">Thrown when the URL is not absolute.</exception>
     public void UpdateTargetUrl(string targetUrl)
     {

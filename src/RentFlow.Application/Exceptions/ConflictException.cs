@@ -7,8 +7,6 @@ namespace RentFlow.Application.Exceptions;
 /// </summary>
 public sealed class ConflictException : Exception
 {
-    /// <summary>Initializes a new instance with a message describing the conflict.</summary>
-    /// <param name="message">A message describing the conflict.</param>
     public ConflictException(string message) : base(message)
     {
     }

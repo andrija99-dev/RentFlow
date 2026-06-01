@@ -8,10 +8,6 @@ using RentFlow.Domain.Interfaces;
 
 namespace RentFlow.Application.RentalApplications.Submit;
 
-/// <summary>
-/// Validates that the target property is open to applications and that the tenant
-/// has no pending application for it, then creates and persists the application.
-/// </summary>
 internal sealed class SubmitApplicationCommandHandler(
     IRentalApplicationRepository applications,
     IPropertyRepository properties,

@@ -10,8 +10,6 @@ namespace RentFlow.Application.Properties.Common;
 internal static class PropertyAuthorization
 {
     /// <summary>Throws unless the current user owns the resource identified by <paramref name="ownerId"/> (or is an admin).</summary>
-    /// <param name="ownerId">The identifier of the resource's owner.</param>
-    /// <param name="currentUser">The accessor for the calling user.</param>
     /// <exception cref="ForbiddenAccessException">Thrown when the caller is neither the owner nor an administrator.</exception>
     public static void EnsureCanManage(Guid ownerId, ICurrentUser currentUser)
     {

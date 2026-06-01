@@ -11,7 +11,6 @@ namespace RentFlow.Application.Properties.Common;
 /// </summary>
 public sealed class PropertyMappingProfile : Profile
 {
-    /// <summary>Configures the property-to-DTO maps.</summary>
     public PropertyMappingProfile()
     {
         CreateMap<Address, AddressDto>();

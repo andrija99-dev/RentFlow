@@ -2,10 +2,8 @@ using FluentValidation;
 
 namespace RentFlow.Application.Authentication.Register;
 
-/// <inheritdoc />
 internal sealed class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
-    /// <summary>Initializes the validation rules for <see cref="RegisterCommand"/>.</summary>
     public RegisterCommandValidator()
     {
         RuleFor(x => x.Email)

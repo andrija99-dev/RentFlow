@@ -8,7 +8,6 @@ using RentFlow.Domain.Interfaces;
 
 namespace RentFlow.Application.Properties.Publish;
 
-/// <summary>Authorizes the caller and transitions the listing from draft to available.</summary>
 internal sealed class PublishPropertyCommandHandler(
     IPropertyRepository properties,
     IUnitOfWork unitOfWork,

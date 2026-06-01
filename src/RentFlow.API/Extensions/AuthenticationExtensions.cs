@@ -17,9 +17,6 @@ public static class AuthenticationExtensions
     /// Wires up JWT bearer validation from the <c>Jwt</c> configuration section,
     /// the authorization services and the current-user accessor.
     /// </summary>
-    /// <param name="services">The service collection to add registrations to.</param>
-    /// <param name="configuration">The application configuration supplying the JWT settings.</param>
-    /// <returns>The same <see cref="IServiceCollection"/> instance, enabling chaining.</returns>
     /// <exception cref="InvalidOperationException">Thrown when the JWT configuration section is missing.</exception>
     public static IServiceCollection AddJwtAuthentication(
         this IServiceCollection services,

@@ -12,11 +12,7 @@ namespace RentFlow.Application;
 /// </summary>
 public static class DependencyInjection
 {
-    /// <summary>
-    /// Adds the Application layer services to the dependency injection container.
-    /// </summary>
-    /// <param name="services">The service collection to add registrations to.</param>
-    /// <returns>The same <see cref="IServiceCollection"/> instance, enabling chaining.</returns>
+    /// <summary>Adds the Application layer services to the dependency injection container.</summary>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         var assembly = typeof(DependencyInjection).Assembly;

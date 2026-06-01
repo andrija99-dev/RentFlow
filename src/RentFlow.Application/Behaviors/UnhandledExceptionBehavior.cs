@@ -18,8 +18,6 @@ public sealed class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineB
 {
     private readonly ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> _logger;
 
-    /// <summary>Initializes the behavior with a logger.</summary>
-    /// <param name="logger">The logger used to record unexpected failures.</param>
     public UnhandledExceptionBehavior(ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> logger) =>
         _logger = logger;
 

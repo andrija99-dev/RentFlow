@@ -8,7 +8,6 @@ using RentFlow.Domain.Interfaces;
 
 namespace RentFlow.Application.Contracts.Terminate;
 
-/// <summary>Authorizes the property owner, then terminates the active contract.</summary>
 internal sealed class TerminateContractCommandHandler(
     IContractRepository contracts,
     IContractReadService readService,

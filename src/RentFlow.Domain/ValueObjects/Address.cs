@@ -15,24 +15,15 @@ public sealed class Address : ValueObject
         Country = country;
     }
 
-    /// <summary>Gets the street line, including any house or unit number.</summary>
     public string Street { get; }
 
-    /// <summary>Gets the city or town.</summary>
     public string City { get; }
 
-    /// <summary>Gets the postal or ZIP code.</summary>
     public string PostalCode { get; }
 
-    /// <summary>Gets the country.</summary>
     public string Country { get; }
 
     /// <summary>Creates a validated <see cref="Address"/> instance.</summary>
-    /// <param name="street">The street line; required.</param>
-    /// <param name="city">The city or town; required.</param>
-    /// <param name="postalCode">The postal or ZIP code; required.</param>
-    /// <param name="country">The country; required.</param>
-    /// <returns>The created <see cref="Address"/> value.</returns>
     /// <exception cref="DomainException">Thrown when any component is missing.</exception>
     public static Address Create(string street, string city, string postalCode, string country)
     {

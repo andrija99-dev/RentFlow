@@ -24,9 +24,6 @@ public sealed class ContractsController(ISender sender) : ControllerBase
     private readonly ISender _sender = sender;
 
     /// <summary>Retrieves a single contract; visible to its tenant, the property owner or an admin.</summary>
-    /// <param name="id">The contract identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The contract.</returns>
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ContractResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -38,8 +35,6 @@ public sealed class ContractsController(ISender sender) : ControllerBase
         Ok(await _sender.Send(new GetContractByIdQuery(id), cancellationToken));
 
     /// <summary>Lists the contracts belonging to the current tenant.</summary>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The tenant's contracts.</returns>
     [HttpGet("mine")]
     [Authorize(Roles = Roles.Tenant)]
     [ProducesResponseType(typeof(IReadOnlyList<ContractResponse>), StatusCodes.Status200OK)]
@@ -49,9 +44,6 @@ public sealed class ContractsController(ISender sender) : ControllerBase
         Ok(await _sender.Send(new GetMyContractsQuery(), cancellationToken));
 
     /// <summary>Lists the contracts generated for a property; only the owner may view them.</summary>
-    /// <param name="propertyId">The property identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The contracts for the property.</returns>
     [HttpGet("/api/properties/{propertyId:guid}/contracts")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(typeof(IReadOnlyList<ContractResponse>), StatusCodes.Status200OK)]
@@ -64,9 +56,6 @@ public sealed class ContractsController(ISender sender) : ControllerBase
         Ok(await _sender.Send(new GetContractsForPropertyQuery(propertyId), cancellationToken));
 
     /// <summary>Terminates an active contract before its end date; only the property owner may do so.</summary>
-    /// <param name="id">The contract identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>No content.</returns>
     [HttpPost("{id:guid}/terminate")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

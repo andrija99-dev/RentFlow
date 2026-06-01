@@ -8,7 +8,6 @@ using RentFlow.Domain.Entities;
 
 namespace RentFlow.Application.RentalApplications.GetForProperty;
 
-/// <summary>Verifies the caller owns the property, then lists its applications via Dapper.</summary>
 internal sealed class GetApplicationsForPropertyQueryHandler(
     IPropertyReadService propertyReads,
     IRentalApplicationReadService readService,

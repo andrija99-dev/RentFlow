@@ -18,9 +18,6 @@ public static class IdentitySeedExtensions
     /// account described by the <c>Seed:Admin</c> configuration section if one is
     /// configured and not already present.
     /// </summary>
-    /// <param name="host">The application host whose services supply the Identity managers.</param>
-    /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A task that completes when seeding has finished.</returns>
     public static async Task SeedIdentityAsync(this IHost host, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(host);

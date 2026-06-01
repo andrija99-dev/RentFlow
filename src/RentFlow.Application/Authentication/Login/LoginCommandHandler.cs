@@ -3,7 +3,6 @@ using RentFlow.Application.Abstractions.Messaging;
 
 namespace RentFlow.Application.Authentication.Login;
 
-/// <summary>Verifies credentials via the identity service, then issues a token pair.</summary>
 internal sealed class LoginCommandHandler(
     IIdentityService identityService,
     ITokenService tokenService) : ICommandHandler<LoginCommand, AuthenticationResult>

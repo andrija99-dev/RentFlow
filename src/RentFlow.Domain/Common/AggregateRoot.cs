@@ -9,8 +9,6 @@ public abstract class AggregateRoot : Entity
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 
-    /// <summary>Initializes a new aggregate root with the supplied identifier.</summary>
-    /// <param name="id">The unique identifier of the aggregate.</param>
     protected AggregateRoot(Guid id) : base(id)
     {
     }
@@ -20,11 +18,9 @@ public abstract class AggregateRoot : Entity
     {
     }
 
-    /// <summary>Gets the domain events raised by this aggregate that have not yet been dispatched.</summary>
     public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     /// <summary>Records a domain event to be dispatched after the current unit of work is committed.</summary>
-    /// <param name="domainEvent">The event to raise.</param>
     protected void RaiseDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
 
     /// <summary>Clears the recorded domain events. Called by the infrastructure after dispatching them.</summary>

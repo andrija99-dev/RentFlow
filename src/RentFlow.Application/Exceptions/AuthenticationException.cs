@@ -7,8 +7,6 @@ namespace RentFlow.Application.Exceptions;
 /// </summary>
 public sealed class AuthenticationException : Exception
 {
-    /// <summary>Initializes a new instance with a message describing the failure.</summary>
-    /// <param name="message">A message describing the authentication failure.</param>
     public AuthenticationException(string message) : base(message)
     {
     }

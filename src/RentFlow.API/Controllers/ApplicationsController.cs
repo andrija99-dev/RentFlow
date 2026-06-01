@@ -27,9 +27,6 @@ public sealed class ApplicationsController(ISender sender) : ControllerBase
     private readonly ISender _sender = sender;
 
     /// <summary>Submits a rental application for a property.</summary>
-    /// <param name="request">The property and optional message.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The created application.</returns>
     [HttpPost]
     [Authorize(Roles = Roles.Tenant)]
     [ProducesResponseType(typeof(RentalApplicationResponse), StatusCodes.Status201Created)]
@@ -49,9 +46,6 @@ public sealed class ApplicationsController(ISender sender) : ControllerBase
     }
 
     /// <summary>Retrieves a single application; visible to its tenant, the property owner or an admin.</summary>
-    /// <param name="id">The application identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The application.</returns>
     [HttpGet("{id:guid}", Name = nameof(GetById))]
     [ProducesResponseType(typeof(RentalApplicationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -63,8 +57,6 @@ public sealed class ApplicationsController(ISender sender) : ControllerBase
         Ok(await _sender.Send(new GetApplicationByIdQuery(id), cancellationToken));
 
     /// <summary>Lists the applications submitted by the current tenant.</summary>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The tenant's applications.</returns>
     [HttpGet("mine")]
     [Authorize(Roles = Roles.Tenant)]
     [ProducesResponseType(typeof(IReadOnlyList<RentalApplicationResponse>), StatusCodes.Status200OK)]
@@ -74,9 +66,6 @@ public sealed class ApplicationsController(ISender sender) : ControllerBase
         Ok(await _sender.Send(new GetMyApplicationsQuery(), cancellationToken));
 
     /// <summary>Lists the applications submitted for a property; only the owner may view them.</summary>
-    /// <param name="propertyId">The property identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The applications for the property.</returns>
     [HttpGet("/api/properties/{propertyId:guid}/applications")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(typeof(IReadOnlyList<RentalApplicationResponse>), StatusCodes.Status200OK)]
@@ -89,9 +78,6 @@ public sealed class ApplicationsController(ISender sender) : ControllerBase
         Ok(await _sender.Send(new GetApplicationsForPropertyQuery(propertyId), cancellationToken));
 
     /// <summary>Accepts a pending application; only the property owner may do so.</summary>
-    /// <param name="id">The application identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>No content.</returns>
     [HttpPost("{id:guid}/accept")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -107,9 +93,6 @@ public sealed class ApplicationsController(ISender sender) : ControllerBase
     }
 
     /// <summary>Rejects a pending application; only the property owner may do so.</summary>
-    /// <param name="id">The application identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>No content.</returns>
     [HttpPost("{id:guid}/reject")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -125,9 +108,6 @@ public sealed class ApplicationsController(ISender sender) : ControllerBase
     }
 
     /// <summary>Withdraws a pending application; only the tenant who submitted it may do so.</summary>
-    /// <param name="id">The application identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>No content.</returns>
     [HttpPost("{id:guid}/withdraw")]
     [Authorize(Roles = $"{Roles.Tenant},{Roles.Admin}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

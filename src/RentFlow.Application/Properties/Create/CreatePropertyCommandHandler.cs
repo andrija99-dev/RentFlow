@@ -10,7 +10,6 @@ using RentFlow.Domain.ValueObjects;
 
 namespace RentFlow.Application.Properties.Create;
 
-/// <summary>Builds the <see cref="Property"/> aggregate, persists it and returns its representation.</summary>
 internal sealed class CreatePropertyCommandHandler(
     IPropertyRepository properties,
     IUnitOfWork unitOfWork,

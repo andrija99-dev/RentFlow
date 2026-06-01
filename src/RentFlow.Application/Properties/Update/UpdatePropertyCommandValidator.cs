@@ -5,7 +5,6 @@ namespace RentFlow.Application.Properties.Update;
 /// <inheritdoc />
 internal sealed class UpdatePropertyCommandValidator : AbstractValidator<UpdatePropertyCommand>
 {
-    /// <summary>Initializes the validation rules for <see cref="UpdatePropertyCommand"/>.</summary>
     public UpdatePropertyCommandValidator()
     {
         RuleFor(x => x.PropertyId)

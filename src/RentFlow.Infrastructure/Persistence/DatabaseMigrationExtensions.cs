@@ -16,9 +16,6 @@ public static class DatabaseMigrationExtensions
     /// Creates the database if it does not exist and applies all pending migrations.
     /// Logs the set of migrations that were applied (or notes that none were pending).
     /// </summary>
-    /// <param name="host">The application host whose service provider supplies the <see cref="RentFlowDbContext"/>.</param>
-    /// <param name="cancellationToken">A token to cancel the operation.</param>
-    /// <returns>A task that completes when the database is at the latest schema version.</returns>
     public static async Task ApplyDatabaseMigrationsAsync(this IHost host, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(host);

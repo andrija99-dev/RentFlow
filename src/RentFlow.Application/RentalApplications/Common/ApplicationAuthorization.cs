@@ -11,8 +11,6 @@ namespace RentFlow.Application.RentalApplications.Common;
 internal static class ApplicationAuthorization
 {
     /// <summary>Throws unless the current user is the tenant who submitted the application (or an admin).</summary>
-    /// <param name="tenantId">The identifier of the tenant who owns the application.</param>
-    /// <param name="currentUser">The accessor for the calling user.</param>
     /// <exception cref="ForbiddenAccessException">Thrown when the caller is neither the applicant nor an administrator.</exception>
     public static void EnsureIsApplicant(Guid tenantId, ICurrentUser currentUser)
     {
@@ -25,9 +23,6 @@ internal static class ApplicationAuthorization
     }
 
     /// <summary>Throws unless the current user is the applicant, the property owner, or an admin.</summary>
-    /// <param name="tenantId">The identifier of the tenant who owns the application.</param>
-    /// <param name="propertyOwnerId">The identifier of the owner of the applied-for property.</param>
-    /// <param name="currentUser">The accessor for the calling user.</param>
     /// <exception cref="ForbiddenAccessException">Thrown when the caller is none of the permitted parties.</exception>
     public static void EnsureCanView(Guid tenantId, Guid propertyOwnerId, ICurrentUser currentUser)
     {

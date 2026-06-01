@@ -8,10 +8,8 @@ namespace RentFlow.Infrastructure.Persistence.Repositories;
 internal abstract class Repository<TAggregate>(RentFlowDbContext dbContext) : IRepository<TAggregate>
     where TAggregate : AggregateRoot
 {
-    /// <summary>Gets the EF Core context used by the repository.</summary>
     protected RentFlowDbContext DbContext { get; } = dbContext;
 
-    /// <summary>Gets the strongly-typed <see cref="DbSet{TEntity}"/> for the aggregate.</summary>
     protected DbSet<TAggregate> Set => DbContext.Set<TAggregate>();
 
     /// <inheritdoc />

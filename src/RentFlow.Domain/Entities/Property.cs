@@ -33,37 +33,23 @@ public sealed class Property : AggregateRoot
     {
     }
 
-    /// <summary>Gets the listing title.</summary>
     public string Title { get; private set; } = null!;
 
-    /// <summary>Gets the listing description.</summary>
     public string Description { get; private set; } = null!;
 
-    /// <summary>Gets the property's postal address.</summary>
     public Address Address { get; private set; } = null!;
 
-    /// <summary>Gets the advertised monthly rental price.</summary>
     public Money Price { get; private set; } = null!;
 
-    /// <summary>Gets the identifier of the owner who created the listing.</summary>
     public Guid OwnerId { get; private set; }
 
-    /// <summary>Gets the current lifecycle status of the listing.</summary>
     public PropertyStatus Status { get; private set; }
 
-    /// <summary>Gets the UTC timestamp at which the listing was created.</summary>
     public DateTime CreatedAtUtc { get; private set; }
 
-    /// <summary>Gets the images attached to the listing.</summary>
     public IReadOnlyCollection<PropertyImage> Images => _images.AsReadOnly();
 
     /// <summary>Creates a new property listing in the <see cref="PropertyStatus.Draft"/> state.</summary>
-    /// <param name="title">The listing title; required.</param>
-    /// <param name="description">The listing description; required.</param>
-    /// <param name="address">The property's address.</param>
-    /// <param name="price">The advertised monthly rent.</param>
-    /// <param name="ownerId">The identifier of the owner creating the listing.</param>
-    /// <returns>The newly created <see cref="Property"/>.</returns>
     /// <exception cref="DomainException">Thrown when the title or description is missing, or the owner is empty.</exception>
     public static Property Create(string title, string description, Address address, Money price, Guid ownerId)
     {
@@ -86,10 +72,6 @@ public sealed class Property : AggregateRoot
     }
 
     /// <summary>Updates the editable details of the listing.</summary>
-    /// <param name="title">The new title; required.</param>
-    /// <param name="description">The new description; required.</param>
-    /// <param name="address">The new address.</param>
-    /// <param name="price">The new monthly rent.</param>
     /// <exception cref="DomainException">Thrown when the title or description is missing.</exception>
     public void UpdateDetails(string title, string description, Address address, Money price)
     {
@@ -109,10 +91,10 @@ public sealed class Property : AggregateRoot
         Price = price;
     }
 
-    /// <summary>Adds an image to the listing.</summary>
-    /// <param name="blobUrl">The blob storage URL of the image.</param>
-    /// <param name="isPrimary">When <see langword="true"/>, the image becomes the primary image, demoting any existing primary.</param>
-    /// <returns>The created <see cref="PropertyImage"/>.</returns>
+    /// <summary>
+    /// Adds an image to the listing. When <paramref name="isPrimary"/> is set, or this is
+    /// the first image, it becomes the primary image and demotes any existing primary.
+    /// </summary>
     public PropertyImage AddImage(string blobUrl, bool isPrimary = false)
     {
         var makePrimary = isPrimary || _images.Count == 0;
@@ -130,7 +112,6 @@ public sealed class Property : AggregateRoot
     }
 
     /// <summary>Removes an image from the listing, promoting another to primary if needed.</summary>
-    /// <param name="imageId">The identifier of the image to remove.</param>
     /// <exception cref="DomainException">Thrown when no image with the given identifier exists.</exception>
     public void RemoveImage(Guid imageId)
     {
@@ -147,7 +128,6 @@ public sealed class Property : AggregateRoot
     }
 
     /// <summary>Designates an existing image as the listing's primary image.</summary>
-    /// <param name="imageId">The identifier of the image to promote.</param>
     /// <exception cref="DomainException">Thrown when no image with the given identifier exists.</exception>
     public void SetPrimaryImage(Guid imageId)
     {

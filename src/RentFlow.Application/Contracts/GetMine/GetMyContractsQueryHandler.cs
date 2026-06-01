@@ -6,7 +6,6 @@ using RentFlow.Application.Exceptions;
 
 namespace RentFlow.Application.Contracts.GetMine;
 
-/// <summary>Lists the current tenant's contracts via Dapper, newest first.</summary>
 internal sealed class GetMyContractsQueryHandler(
     IContractReadService readService,
     ICurrentUser currentUser) : IQueryHandler<GetMyContractsQuery, IReadOnlyList<ContractResponse>>

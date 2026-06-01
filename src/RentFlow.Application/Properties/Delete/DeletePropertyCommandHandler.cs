@@ -8,7 +8,6 @@ using RentFlow.Domain.Interfaces;
 
 namespace RentFlow.Application.Properties.Delete;
 
-/// <summary>Authorizes the caller, removes the listing and evicts cached copies.</summary>
 internal sealed class DeletePropertyCommandHandler(
     IPropertyRepository properties,
     IUnitOfWork unitOfWork,
