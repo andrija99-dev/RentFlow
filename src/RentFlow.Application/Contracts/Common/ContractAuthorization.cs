@@ -11,9 +11,6 @@ namespace RentFlow.Application.Contracts.Common;
 internal static class ContractAuthorization
 {
     /// <summary>Throws unless the current user is the tenant, the property owner, or an admin.</summary>
-    /// <param name="tenantId">The identifier of the contract's tenant.</param>
-    /// <param name="propertyOwnerId">The identifier of the owner of the rented property.</param>
-    /// <param name="currentUser">The accessor for the calling user.</param>
     /// <exception cref="ForbiddenAccessException">Thrown when the caller is none of the permitted parties.</exception>
     public static void EnsureCanView(Guid tenantId, Guid propertyOwnerId, ICurrentUser currentUser)
     {
@@ -28,8 +25,6 @@ internal static class ContractAuthorization
     }
 
     /// <summary>Throws unless the current user owns the rented property (or is an admin).</summary>
-    /// <param name="propertyOwnerId">The identifier of the owner of the rented property.</param>
-    /// <param name="currentUser">The accessor for the calling user.</param>
     /// <exception cref="ForbiddenAccessException">Thrown when the caller is neither the owner nor an administrator.</exception>
     public static void EnsureCanManage(Guid propertyOwnerId, ICurrentUser currentUser)
     {

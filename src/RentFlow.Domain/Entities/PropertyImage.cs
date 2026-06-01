@@ -19,13 +19,10 @@ public sealed class PropertyImage : Entity
     {
     }
 
-    /// <summary>Gets the identifier of the property this image belongs to.</summary>
     public Guid PropertyId { get; private set; }
 
-    /// <summary>Gets the blob storage URL of the image.</summary>
     public string BlobUrl { get; private set; } = null!;
 
-    /// <summary>Gets a value indicating whether this is the property's primary image.</summary>
     public bool IsPrimary { get; private set; }
 
     internal static PropertyImage Create(Guid propertyId, string blobUrl, bool isPrimary)

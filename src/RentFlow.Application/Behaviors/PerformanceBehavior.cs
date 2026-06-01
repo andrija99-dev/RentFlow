@@ -18,8 +18,6 @@ public sealed class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior
     private readonly ILogger<PerformanceBehavior<TRequest, TResponse>> _logger;
     private readonly Stopwatch _timer = new();
 
-    /// <summary>Initializes the behavior with a logger.</summary>
-    /// <param name="logger">The logger used to record slow requests.</param>
     public PerformanceBehavior(ILogger<PerformanceBehavior<TRequest, TResponse>> logger) => _logger = logger;
 
     /// <inheritdoc />

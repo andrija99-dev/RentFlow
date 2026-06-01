@@ -7,7 +7,6 @@ using RentFlow.Domain.Entities;
 
 namespace RentFlow.Application.Properties.GetById;
 
-/// <summary>Serves the listing from the cache, falling back to the Dapper read service on a miss.</summary>
 internal sealed class GetPropertyByIdQueryHandler(
     IPropertyReadService readService,
     ICacheService cache) : IQueryHandler<GetPropertyByIdQuery, PropertyResponse>

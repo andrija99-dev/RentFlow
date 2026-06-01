@@ -7,7 +7,6 @@ using RentFlow.Domain.Entities;
 
 namespace RentFlow.Application.Contracts.GetById;
 
-/// <summary>Loads the contract via Dapper and authorizes the caller to view it.</summary>
 internal sealed class GetContractByIdQueryHandler(
     IContractReadService readService,
     ICurrentUser currentUser) : IQueryHandler<GetContractByIdQuery, ContractResponse>

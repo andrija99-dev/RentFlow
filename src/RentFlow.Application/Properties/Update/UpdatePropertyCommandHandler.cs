@@ -9,7 +9,6 @@ using RentFlow.Domain.ValueObjects;
 
 namespace RentFlow.Application.Properties.Update;
 
-/// <summary>Loads the listing, authorizes the caller, applies the new details and evicts cached copies.</summary>
 internal sealed class UpdatePropertyCommandHandler(
     IPropertyRepository properties,
     IUnitOfWork unitOfWork,

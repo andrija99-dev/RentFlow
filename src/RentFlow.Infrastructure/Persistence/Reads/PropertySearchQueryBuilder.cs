@@ -20,8 +20,6 @@ internal sealed class PropertySearchQueryBuilder
     }
 
     /// <summary>Begins building a query for the supplied criteria.</summary>
-    /// <param name="criteria">The filter and paging inputs.</param>
-    /// <returns>A configured builder ready to <see cref="Build"/>.</returns>
     public static PropertySearchQueryBuilder For(PropertySearchCriteria criteria)
     {
         var builder = new PropertySearchQueryBuilder();
@@ -75,7 +73,6 @@ internal sealed class PropertySearchQueryBuilder
     }
 
     /// <summary>Composes the final statements and the bound parameters.</summary>
-    /// <returns>The page SQL, the count SQL and the shared parameters.</returns>
     public (string PageSql, string CountSql, DynamicParameters Parameters) Build()
     {
         var whereClause = _conditions.Count == 0

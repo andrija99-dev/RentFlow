@@ -6,11 +6,6 @@ using RentFlow.Application.Properties.Common;
 
 namespace RentFlow.Application.Properties.Search;
 
-/// <summary>
-/// Serves a search page from the cache, falling back to the Dapper read service on a
-/// miss. Results are keyed by the current search-version counter so any listing
-/// change invalidates the whole result set without per-key bookkeeping.
-/// </summary>
 internal sealed class SearchPropertiesQueryHandler(
     IPropertyReadService readService,
     ICacheService cache) : IQueryHandler<SearchPropertiesQuery, PagedResult<PropertySummaryResponse>>

@@ -24,29 +24,19 @@ public sealed class RentalApplication : AggregateRoot
     {
     }
 
-    /// <summary>Gets the identifier of the property applied for.</summary>
     public Guid PropertyId { get; private set; }
 
-    /// <summary>Gets the identifier of the applying tenant.</summary>
     public Guid TenantId { get; private set; }
 
-    /// <summary>Gets the current status of the application.</summary>
     public ApplicationStatus Status { get; private set; }
 
-    /// <summary>Gets the optional message the tenant included with the application.</summary>
     public string? Message { get; private set; }
 
-    /// <summary>Gets the UTC timestamp at which the application was submitted.</summary>
     public DateTime CreatedAtUtc { get; private set; }
 
-    /// <summary>Gets the UTC timestamp at which the application was decided, if any.</summary>
     public DateTime? DecidedAtUtc { get; private set; }
 
     /// <summary>Submits a new rental application in the <see cref="ApplicationStatus.Pending"/> state.</summary>
-    /// <param name="propertyId">The identifier of the property being applied for.</param>
-    /// <param name="tenantId">The identifier of the applying tenant.</param>
-    /// <param name="message">An optional message to the owner.</param>
-    /// <returns>The created <see cref="RentalApplication"/>.</returns>
     /// <exception cref="DomainException">Thrown when the property or tenant identifier is empty.</exception>
     public static RentalApplication Create(Guid propertyId, Guid tenantId, string? message)
     {

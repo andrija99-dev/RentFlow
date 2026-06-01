@@ -2,10 +2,8 @@ using FluentValidation;
 
 namespace RentFlow.Application.Properties.Search;
 
-/// <inheritdoc />
 internal sealed class SearchPropertiesQueryValidator : AbstractValidator<SearchPropertiesQuery>
 {
-    /// <summary>Initializes the validation rules for <see cref="SearchPropertiesQuery"/>.</summary>
     public SearchPropertiesQueryValidator()
     {
         RuleFor(x => x.Page)

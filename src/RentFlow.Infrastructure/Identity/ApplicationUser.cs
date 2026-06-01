@@ -9,12 +9,9 @@ namespace RentFlow.Infrastructure.Identity;
 /// </summary>
 public sealed class ApplicationUser : IdentityUser<Guid>
 {
-    /// <summary>Gets or sets the user's first name.</summary>
     public string FirstName { get; set; } = null!;
 
-    /// <summary>Gets or sets the user's last name.</summary>
     public string LastName { get; set; } = null!;
 
-    /// <summary>Gets the refresh tokens issued to this user.</summary>
     public ICollection<RefreshToken> RefreshTokens { get; } = [];
 }

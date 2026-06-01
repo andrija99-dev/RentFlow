@@ -7,7 +7,6 @@ using RentFlow.Domain.Entities;
 
 namespace RentFlow.Application.RentalApplications.GetById;
 
-/// <summary>Loads the application via Dapper and authorizes the caller to view it.</summary>
 internal sealed class GetApplicationByIdQueryHandler(
     IRentalApplicationReadService readService,
     ICurrentUser currentUser) : IQueryHandler<GetApplicationByIdQuery, RentalApplicationResponse>

@@ -3,7 +3,6 @@ using RentFlow.Application.Abstractions.Messaging;
 
 namespace RentFlow.Application.Authentication.Logout;
 
-/// <summary>Delegates to the token service to revoke the presented refresh token.</summary>
 internal sealed class RevokeTokenCommandHandler(ITokenService tokenService)
     : ICommandHandler<RevokeTokenCommand>
 {

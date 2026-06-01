@@ -7,7 +7,6 @@ using RentFlow.Domain.Interfaces;
 
 namespace RentFlow.Application.RentalApplications.Withdraw;
 
-/// <summary>Authorizes the applicant, then withdraws their pending application.</summary>
 internal sealed class WithdrawApplicationCommandHandler(
     IRentalApplicationRepository applications,
     IUnitOfWork unitOfWork,

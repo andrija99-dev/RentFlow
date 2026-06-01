@@ -30,33 +30,21 @@ public sealed class Contract : AggregateRoot
     {
     }
 
-    /// <summary>Gets the identifier of the application this contract was generated from.</summary>
     public Guid RentalApplicationId { get; private set; }
 
-    /// <summary>Gets the first day of the rental period.</summary>
     public DateOnly StartDate { get; private set; }
 
-    /// <summary>Gets the last day of the rental period.</summary>
     public DateOnly EndDate { get; private set; }
 
-    /// <summary>Gets the agreed monthly rent.</summary>
     public Money MonthlyRent { get; private set; } = null!;
 
-    /// <summary>Gets the blob storage URL of the generated contract document, if uploaded.</summary>
     public string? DocumentBlobUrl { get; private set; }
 
-    /// <summary>Gets the current status of the contract.</summary>
     public ContractStatus Status { get; private set; }
 
-    /// <summary>Gets the UTC timestamp at which the contract was created.</summary>
     public DateTime CreatedAtUtc { get; private set; }
 
     /// <summary>Creates an active contract for an accepted application.</summary>
-    /// <param name="rentalApplicationId">The accepted application's identifier.</param>
-    /// <param name="startDate">The first day of the rental period.</param>
-    /// <param name="endDate">The last day of the rental period; must be after <paramref name="startDate"/>.</param>
-    /// <param name="monthlyRent">The agreed monthly rent.</param>
-    /// <returns>The created <see cref="Contract"/>.</returns>
     /// <exception cref="DomainException">Thrown when the application is empty or the date range is invalid.</exception>
     public static Contract Create(Guid rentalApplicationId, DateOnly startDate, DateOnly endDate, Money monthlyRent)
     {
@@ -76,7 +64,6 @@ public sealed class Contract : AggregateRoot
     }
 
     /// <summary>Attaches the generated contract document's blob URL.</summary>
-    /// <param name="documentBlobUrl">The blob storage URL of the document.</param>
     /// <exception cref="DomainException">Thrown when the URL is missing.</exception>
     public void AttachDocument(string documentBlobUrl)
     {

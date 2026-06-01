@@ -27,9 +27,6 @@ public sealed class PropertiesController(ISender sender) : ControllerBase
     private readonly ISender _sender = sender;
 
     /// <summary>Runs a filtered, paged search over the property catalog.</summary>
-    /// <param name="request">The search filters and paging options.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>A page of matching listing summaries.</returns>
     [HttpGet]
     [AllowAnonymous]
     [ProducesResponseType(typeof(PagedResult<PropertySummaryResponse>), StatusCodes.Status200OK)]
@@ -53,9 +50,6 @@ public sealed class PropertiesController(ISender sender) : ControllerBase
     }
 
     /// <summary>Retrieves a single property listing, including its images.</summary>
-    /// <param name="id">The listing identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The full listing representation.</returns>
     [HttpGet("{id:guid}", Name = nameof(GetPropertyById))]
     [AllowAnonymous]
     [ProducesResponseType(typeof(PropertyResponse), StatusCodes.Status200OK)]
@@ -66,9 +60,6 @@ public sealed class PropertiesController(ISender sender) : ControllerBase
         Ok(await _sender.Send(new GetPropertyByIdQuery(id), cancellationToken));
 
     /// <summary>Creates a new property listing owned by the current user.</summary>
-    /// <param name="request">The listing details.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>The created listing.</returns>
     [HttpPost]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(typeof(PropertyResponse), StatusCodes.Status201Created)]
@@ -95,10 +86,6 @@ public sealed class PropertiesController(ISender sender) : ControllerBase
     }
 
     /// <summary>Updates the editable details of a listing the caller owns.</summary>
-    /// <param name="id">The listing identifier.</param>
-    /// <param name="request">The new details.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>No content.</returns>
     [HttpPut("{id:guid}")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -128,9 +115,6 @@ public sealed class PropertiesController(ISender sender) : ControllerBase
     }
 
     /// <summary>Publishes a draft listing, making it available for applications.</summary>
-    /// <param name="id">The listing identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>No content.</returns>
     [HttpPost("{id:guid}/publish")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -146,9 +130,6 @@ public sealed class PropertiesController(ISender sender) : ControllerBase
     }
 
     /// <summary>Withdraws a listing from the marketplace.</summary>
-    /// <param name="id">The listing identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>No content.</returns>
     [HttpPost("{id:guid}/unlist")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -163,9 +144,6 @@ public sealed class PropertiesController(ISender sender) : ControllerBase
     }
 
     /// <summary>Permanently deletes a listing the caller owns.</summary>
-    /// <param name="id">The listing identifier.</param>
-    /// <param name="cancellationToken">A token to cancel the request.</param>
-    /// <returns>No content.</returns>
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = $"{Roles.Owner},{Roles.Admin}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

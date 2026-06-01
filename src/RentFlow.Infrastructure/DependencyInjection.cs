@@ -36,12 +36,7 @@ public static class DependencyInjection
     /// <summary>The configuration key for the optional Azure Blob Storage connection string.</summary>
     public const string BlobStorageConnectionStringName = "BlobStorage";
 
-    /// <summary>
-    /// Adds the Infrastructure layer services to the dependency injection container.
-    /// </summary>
-    /// <param name="services">The service collection to add registrations to.</param>
-    /// <param name="configuration">The application configuration used to bind options and connection strings.</param>
-    /// <returns>The same <see cref="IServiceCollection"/> instance, enabling chaining.</returns>
+    /// <summary>Adds the Infrastructure layer services to the dependency injection container.</summary>
     /// <exception cref="InvalidOperationException">Thrown when the required connection string is missing.</exception>
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {

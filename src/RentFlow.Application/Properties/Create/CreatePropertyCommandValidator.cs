@@ -5,7 +5,6 @@ namespace RentFlow.Application.Properties.Create;
 /// <inheritdoc />
 internal sealed class CreatePropertyCommandValidator : AbstractValidator<CreatePropertyCommand>
 {
-    /// <summary>Initializes the validation rules for <see cref="CreatePropertyCommand"/>.</summary>
     public CreatePropertyCommandValidator()
     {
         RuleFor(x => x.Title)

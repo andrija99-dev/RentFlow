@@ -10,12 +10,9 @@ public abstract class ValueObject : IEquatable<ValueObject>
     /// Returns the components that participate in equality comparisons, in a
     /// stable order. Derived types yield each significant field.
     /// </summary>
-    /// <returns>The ordered sequence of equality components.</returns>
     protected abstract IEnumerable<object?> GetEqualityComponents();
 
     /// <summary>Determines whether the specified value object is equal to the current one.</summary>
-    /// <param name="other">The value object to compare with.</param>
-    /// <returns><see langword="true"/> if both have the same type and equal components; otherwise <see langword="false"/>.</returns>
     public bool Equals(ValueObject? other) =>
         other is not null && GetType() == other.GetType() &&
         GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
@@ -31,9 +28,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
             return hash;
         }).ToHashCode();
 
-    /// <summary>Determines whether two value objects are equal.</summary>
     public static bool operator ==(ValueObject? left, ValueObject? right) => Equals(left, right);
 
-    /// <summary>Determines whether two value objects are not equal.</summary>
     public static bool operator !=(ValueObject? left, ValueObject? right) => !Equals(left, right);
 }

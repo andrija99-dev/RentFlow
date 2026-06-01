@@ -14,8 +14,6 @@ public sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
 {
     private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger;
 
-    /// <summary>Initializes the behavior with a logger.</summary>
-    /// <param name="logger">The logger used to record request handling.</param>
     public LoggingBehavior(ILogger<LoggingBehavior<TRequest, TResponse>> logger) => _logger = logger;
 
     /// <inheritdoc />

@@ -8,7 +8,6 @@ using RentFlow.Domain.Interfaces;
 
 namespace RentFlow.Application.Properties.Unlist;
 
-/// <summary>Authorizes the caller and withdraws the listing from the marketplace.</summary>
 internal sealed class UnlistPropertyCommandHandler(
     IPropertyRepository properties,
     IUnitOfWork unitOfWork,

@@ -13,8 +13,6 @@ public sealed class ApplicationRole : IdentityRole<Guid>
     {
     }
 
-    /// <summary>Initializes a new role with the given name.</summary>
-    /// <param name="roleName">The role name.</param>
     public ApplicationRole(string roleName) : base(roleName)
     {
     }

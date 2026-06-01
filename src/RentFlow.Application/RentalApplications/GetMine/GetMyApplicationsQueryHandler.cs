@@ -6,7 +6,6 @@ using RentFlow.Application.RentalApplications.Common;
 
 namespace RentFlow.Application.RentalApplications.GetMine;
 
-/// <summary>Lists the current tenant's applications via Dapper, newest first.</summary>
 internal sealed class GetMyApplicationsQueryHandler(
     IRentalApplicationReadService readService,
     ICurrentUser currentUser) : IQueryHandler<GetMyApplicationsQuery, IReadOnlyList<RentalApplicationResponse>>

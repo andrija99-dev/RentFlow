@@ -15,22 +15,16 @@ public sealed class RentFlowDbContext(
 {
     private readonly IPublisher _publisher = publisher;
 
-    /// <summary>Gets the set of property listings.</summary>
     public DbSet<Property> Properties => Set<Property>();
 
-    /// <summary>Gets the set of rental applications.</summary>
     public DbSet<RentalApplication> RentalApplications => Set<RentalApplication>();
 
-    /// <summary>Gets the set of rental contracts.</summary>
     public DbSet<Contract> Contracts => Set<Contract>();
 
-    /// <summary>Gets the set of scheduled payments.</summary>
     public DbSet<Payment> Payments => Set<Payment>();
 
-    /// <summary>Gets the set of webhook subscriptions.</summary>
     public DbSet<WebhookSubscription> WebhookSubscriptions => Set<WebhookSubscription>();
 
-    /// <summary>Gets the set of issued refresh tokens.</summary>
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     /// <inheritdoc />

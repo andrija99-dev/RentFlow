@@ -3,7 +3,6 @@ using RentFlow.Application.Abstractions.Messaging;
 
 namespace RentFlow.Application.Authentication.Register;
 
-/// <summary>Creates the account via the identity service, then issues a token pair.</summary>
 internal sealed class RegisterCommandHandler(
     IIdentityService identityService,
     ITokenService tokenService) : ICommandHandler<RegisterCommand, AuthenticationResult>
