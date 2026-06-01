@@ -54,6 +54,7 @@ public static class DependencyInjection
 
         services.AddSingleton<ISqlConnectionFactory>(new NpgsqlConnectionFactory(connectionString));
         services.AddScoped<IPropertyReadService, PropertyReadService>();
+        services.AddScoped<IRentalApplicationReadService, RentalApplicationReadService>();
 
         services.AddCaching(configuration);
         services.AddAuthenticationServices(configuration);

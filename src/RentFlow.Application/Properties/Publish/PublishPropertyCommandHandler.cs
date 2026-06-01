@@ -25,7 +25,7 @@ internal sealed class PublishPropertyCommandHandler(
         var property = await _properties.GetByIdAsync(request.PropertyId, cancellationToken)
             ?? throw new NotFoundException(nameof(Property), request.PropertyId);
 
-        PropertyAuthorization.EnsureCanManage(property, _currentUser);
+        PropertyAuthorization.EnsureCanManage(property.OwnerId, _currentUser);
 
         property.Publish();
 

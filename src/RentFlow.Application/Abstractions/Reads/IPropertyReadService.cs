@@ -16,6 +16,12 @@ public interface IPropertyReadService
     /// <returns>The listing, or <see langword="null"/> when none exists.</returns>
     Task<PropertyResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
+    /// <summary>Reads only the owner identifier of a listing, for cheap ownership checks.</summary>
+    /// <param name="id">The property identifier.</param>
+    /// <param name="cancellationToken">A token to cancel the operation.</param>
+    /// <returns>The owner's identifier, or <see langword="null"/> when no such property exists.</returns>
+    Task<Guid?> GetOwnerIdAsync(Guid id, CancellationToken cancellationToken = default);
+
     /// <summary>Runs a filtered, paged search over the listings.</summary>
     /// <param name="criteria">The filter, sort and paging inputs.</param>
     /// <param name="cancellationToken">A token to cancel the operation.</param>

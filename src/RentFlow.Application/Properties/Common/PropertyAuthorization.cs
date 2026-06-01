@@ -1,6 +1,5 @@
 using RentFlow.Application.Abstractions.Identity;
 using RentFlow.Application.Exceptions;
-using RentFlow.Domain.Entities;
 
 namespace RentFlow.Application.Properties.Common;
 
@@ -10,18 +9,18 @@ namespace RentFlow.Application.Properties.Common;
 /// </summary>
 internal static class PropertyAuthorization
 {
-    /// <summary>Throws when the current user may not manage the given listing.</summary>
-    /// <param name="property">The listing being acted upon.</param>
+    /// <summary>Throws unless the current user owns the resource identified by <paramref name="ownerId"/> (or is an admin).</summary>
+    /// <param name="ownerId">The identifier of the resource's owner.</param>
     /// <param name="currentUser">The accessor for the calling user.</param>
     /// <exception cref="ForbiddenAccessException">Thrown when the caller is neither the owner nor an administrator.</exception>
-    public static void EnsureCanManage(Property property, ICurrentUser currentUser)
+    public static void EnsureCanManage(Guid ownerId, ICurrentUser currentUser)
     {
         if (currentUser.IsInRole(Roles.Admin))
         {
             return;
         }
 
-        if (currentUser.UserId is { } userId && userId == property.OwnerId)
+        if (currentUser.UserId is { } userId && userId == ownerId)
         {
             return;
         }
