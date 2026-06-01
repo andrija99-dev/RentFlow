@@ -54,6 +54,7 @@ internal sealed class GlobalExceptionHandler(
         ValidationException validation => CreateValidationProblem(validation),
         NotFoundException => Create(StatusCodes.Status404NotFound, "Resource not found", exception.Message),
         ConflictException => Create(StatusCodes.Status409Conflict, "Conflict", exception.Message),
+        ForbiddenAccessException => Create(StatusCodes.Status403Forbidden, "Forbidden", exception.Message),
         AuthenticationException => Create(StatusCodes.Status401Unauthorized, "Authentication failed", exception.Message),
         DomainException => Create(StatusCodes.Status400BadRequest, "Invalid request", exception.Message),
         _ => Create(

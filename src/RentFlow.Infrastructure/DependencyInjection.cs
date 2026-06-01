@@ -3,11 +3,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RentFlow.Application.Abstractions.Caching;
 using RentFlow.Application.Abstractions.Identity;
+using RentFlow.Application.Abstractions.Reads;
 using RentFlow.Domain.Interfaces;
+using RentFlow.Infrastructure.Caching;
 using RentFlow.Infrastructure.Identity;
 using RentFlow.Infrastructure.Persistence;
+using RentFlow.Infrastructure.Persistence.Reads;
 using RentFlow.Infrastructure.Persistence.Repositories;
+using StackExchange.Redis;
 
 namespace RentFlow.Infrastructure;
 
@@ -19,6 +24,9 @@ public static class DependencyInjection
 {
     /// <summary>The configuration key for the primary PostgreSQL connection string.</summary>
     public const string DefaultConnectionStringName = "RentFlowDb";
+
+    /// <summary>The configuration key for the optional Redis connection string.</summary>
+    public const string RedisConnectionStringName = "Redis";
 
     /// <summary>
     /// Adds the Infrastructure layer services to the dependency injection container.
@@ -44,7 +52,30 @@ public static class DependencyInjection
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IWebhookSubscriptionRepository, WebhookSubscriptionRepository>();
 
+        services.AddSingleton<ISqlConnectionFactory>(new NpgsqlConnectionFactory(connectionString));
+        services.AddScoped<IPropertyReadService, PropertyReadService>();
+
+        services.AddCaching(configuration);
         services.AddAuthenticationServices(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddCaching(this IServiceCollection services, IConfiguration configuration)
+    {
+        var redisConnectionString = configuration.GetConnectionString(RedisConnectionStringName);
+
+        if (string.IsNullOrWhiteSpace(redisConnectionString))
+        {
+            services.AddSingleton<ICacheService, NullCacheService>();
+            return services;
+        }
+
+        var options = ConfigurationOptions.Parse(redisConnectionString);
+        options.AbortOnConnectFail = false;
+
+        services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(options));
+        services.AddSingleton<ICacheService, RedisCacheService>();
 
         return services;
     }
