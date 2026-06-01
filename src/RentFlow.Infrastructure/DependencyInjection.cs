@@ -1,17 +1,22 @@
 using System.Text;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RentFlow.Application.Abstractions.Caching;
+using RentFlow.Application.Abstractions.Documents;
 using RentFlow.Application.Abstractions.Identity;
 using RentFlow.Application.Abstractions.Reads;
+using RentFlow.Application.Abstractions.Storage;
 using RentFlow.Domain.Interfaces;
 using RentFlow.Infrastructure.Caching;
+using RentFlow.Infrastructure.Documents;
 using RentFlow.Infrastructure.Identity;
 using RentFlow.Infrastructure.Persistence;
 using RentFlow.Infrastructure.Persistence.Reads;
 using RentFlow.Infrastructure.Persistence.Repositories;
+using RentFlow.Infrastructure.Storage;
 using StackExchange.Redis;
 
 namespace RentFlow.Infrastructure;
@@ -27,6 +32,9 @@ public static class DependencyInjection
 
     /// <summary>The configuration key for the optional Redis connection string.</summary>
     public const string RedisConnectionStringName = "Redis";
+
+    /// <summary>The configuration key for the optional Azure Blob Storage connection string.</summary>
+    public const string BlobStorageConnectionStringName = "BlobStorage";
 
     /// <summary>
     /// Adds the Infrastructure layer services to the dependency injection container.
@@ -55,9 +63,30 @@ public static class DependencyInjection
         services.AddSingleton<ISqlConnectionFactory>(new NpgsqlConnectionFactory(connectionString));
         services.AddScoped<IPropertyReadService, PropertyReadService>();
         services.AddScoped<IRentalApplicationReadService, RentalApplicationReadService>();
+        services.AddScoped<IContractReadService, ContractReadService>();
 
         services.AddCaching(configuration);
+        services.AddStorage(configuration);
         services.AddAuthenticationServices(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddStorage(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<BlobStorageOptions>(configuration.GetSection(BlobStorageOptions.SectionName));
+        services.AddSingleton<IContractDocumentGenerator, ContractDocumentGenerator>();
+
+        var blobConnectionString = configuration.GetConnectionString(BlobStorageConnectionStringName);
+
+        if (string.IsNullOrWhiteSpace(blobConnectionString))
+        {
+            services.AddSingleton<IDocumentStorage, LocalFileDocumentStorage>();
+            return services;
+        }
+
+        services.AddSingleton(_ => new BlobServiceClient(blobConnectionString));
+        services.AddSingleton<IDocumentStorage, AzureBlobDocumentStorage>();
 
         return services;
     }
