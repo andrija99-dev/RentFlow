@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    Unit tests for the Domain and Application layers (pure, in-memory, fast).
-    Mocking and assertion libraries are added in the feature/testing branch.
+    Fast, in-memory unit tests across the Domain, Application and Infrastructure
+    layers (pure logic and handlers with mocked dependencies; no I/O).
   -->
 
   <PropertyGroup>
@@ -15,15 +15,18 @@
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Moq" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\RentFlow.Domain\RentFlow.Domain.csproj" />
     <ProjectReference Include="..\..\src\RentFlow.Application\RentFlow.Application.csproj" />
+    <ProjectReference Include="..\..\src\RentFlow.Infrastructure\RentFlow.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <Using Include="Moq" />
   </ItemGroup>
 
 </Project>

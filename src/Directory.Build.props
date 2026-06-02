@@ -10,4 +10,10 @@
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
+  <!-- Expose internal handlers, helpers and infrastructure types to the test projects. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="RentFlow.UnitTests" />
+    <InternalsVisibleTo Include="RentFlow.IntegrationTests" />
+  </ItemGroup>
+
 </Project>
