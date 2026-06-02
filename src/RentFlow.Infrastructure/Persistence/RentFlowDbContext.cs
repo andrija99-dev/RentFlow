@@ -5,6 +5,7 @@ using RentFlow.Application.DomainEvents;
 using RentFlow.Domain.Common;
 using RentFlow.Domain.Entities;
 using RentFlow.Infrastructure.Identity;
+using RentFlow.Infrastructure.Outbox;
 
 namespace RentFlow.Infrastructure.Persistence;
 
@@ -27,6 +28,8 @@ public sealed class RentFlowDbContext(
 
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
+    internal DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
+
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -46,6 +49,11 @@ public sealed class RentFlowDbContext(
         var domainEvents = aggregatesWithEvents
             .SelectMany(aggregate => aggregate.DomainEvents)
             .ToList();
+
+        foreach (var domainEvent in domainEvents)
+        {
+            OutboxMessages.Add(OutboxMessageFactory.Create(domainEvent));
+        }
 
         var result = await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
