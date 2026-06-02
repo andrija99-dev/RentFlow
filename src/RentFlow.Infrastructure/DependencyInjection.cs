@@ -1,5 +1,7 @@
 using System.Text;
 using Azure.Storage.Blobs;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +12,7 @@ using RentFlow.Application.Abstractions.Identity;
 using RentFlow.Application.Abstractions.Reads;
 using RentFlow.Application.Abstractions.Storage;
 using RentFlow.Domain.Interfaces;
+using RentFlow.Infrastructure.BackgroundJobs;
 using RentFlow.Infrastructure.Caching;
 using RentFlow.Infrastructure.Documents;
 using RentFlow.Infrastructure.Identity;
@@ -59,10 +62,28 @@ public static class DependencyInjection
         services.AddScoped<IPropertyReadService, PropertyReadService>();
         services.AddScoped<IRentalApplicationReadService, RentalApplicationReadService>();
         services.AddScoped<IContractReadService, ContractReadService>();
+        services.AddScoped<IPaymentReadService, PaymentReadService>();
 
         services.AddCaching(configuration);
         services.AddStorage(configuration);
+        services.AddBackgroundJobs(connectionString);
         services.AddAuthenticationServices(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddBackgroundJobs(this IServiceCollection services, string connectionString)
+    {
+        services.AddHangfire(options => options
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UsePostgreSqlStorage(postgres => postgres.UseNpgsqlConnection(connectionString)));
+
+        services.AddHangfireServer();
+
+        services.AddScoped<PaymentReminderJob>();
+        services.AddScoped<ContractExpiryJob>();
 
         return services;
     }
