@@ -21,6 +21,8 @@
     <PackageReference Include="Dapper" />
     <PackageReference Include="StackExchange.Redis" />
     <PackageReference Include="Azure.Storage.Blobs" />
+    <PackageReference Include="Hangfire.AspNetCore" />
+    <PackageReference Include="Hangfire.PostgreSql" />
   </ItemGroup>
 
   <ItemGroup>

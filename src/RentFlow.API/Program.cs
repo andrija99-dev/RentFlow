@@ -1,7 +1,10 @@
+using Hangfire;
+using Microsoft.Extensions.DependencyInjection;
 using RentFlow.API.Extensions;
 using RentFlow.API.Middleware;
 using RentFlow.Application;
 using RentFlow.Infrastructure;
+using RentFlow.Infrastructure.BackgroundJobs;
 using RentFlow.Infrastructure.Identity;
 using RentFlow.Infrastructure.Persistence;
 using Scalar.AspNetCore;
@@ -37,6 +40,12 @@ try
     await app.ApplyDatabaseMigrationsAsync();
     await app.SeedIdentityAsync();
 
+    using (var scope = app.Services.CreateScope())
+    {
+        var recurringJobs = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+        BackgroundJobScheduler.ScheduleRecurringJobs(recurringJobs);
+    }
+
     app.UseExceptionHandler();
     app.UseSerilogRequestLogging();
 
@@ -44,6 +53,7 @@ try
     {
         app.MapOpenApi();
         app.MapScalarApiReference();
+        app.UseHangfireDashboard();
     }
 
     app.UseHttpsRedirection();
