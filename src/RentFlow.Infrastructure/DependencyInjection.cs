@@ -10,16 +10,19 @@ using RentFlow.Application.Abstractions.Caching;
 using RentFlow.Application.Abstractions.Documents;
 using RentFlow.Application.Abstractions.Identity;
 using RentFlow.Application.Abstractions.Reads;
+using RentFlow.Application.Abstractions.Security;
 using RentFlow.Application.Abstractions.Storage;
 using RentFlow.Domain.Interfaces;
 using RentFlow.Infrastructure.BackgroundJobs;
 using RentFlow.Infrastructure.Caching;
 using RentFlow.Infrastructure.Documents;
 using RentFlow.Infrastructure.Identity;
+using RentFlow.Infrastructure.Messaging;
 using RentFlow.Infrastructure.Persistence;
 using RentFlow.Infrastructure.Persistence.Reads;
 using RentFlow.Infrastructure.Persistence.Repositories;
 using RentFlow.Infrastructure.Storage;
+using RentFlow.Infrastructure.Webhooks;
 using StackExchange.Redis;
 
 namespace RentFlow.Infrastructure;
@@ -38,6 +41,9 @@ public static class DependencyInjection
 
     /// <summary>The configuration key for the optional Azure Blob Storage connection string.</summary>
     public const string BlobStorageConnectionStringName = "BlobStorage";
+
+    /// <summary>The configuration key for the optional RabbitMQ connection string.</summary>
+    public const string RabbitMqConnectionStringName = "RabbitMq";
 
     /// <summary>Adds the Infrastructure layer services to the dependency injection container.</summary>
     /// <exception cref="InvalidOperationException">Thrown when the required connection string is missing.</exception>
@@ -63,11 +69,35 @@ public static class DependencyInjection
         services.AddScoped<IRentalApplicationReadService, RentalApplicationReadService>();
         services.AddScoped<IContractReadService, ContractReadService>();
         services.AddScoped<IPaymentReadService, PaymentReadService>();
+        services.AddScoped<IWebhookSubscriptionReadService, WebhookSubscriptionReadService>();
+
+        services.AddSingleton<ISecretGenerator, SecretGenerator>();
 
         services.AddCaching(configuration);
         services.AddStorage(configuration);
+        services.AddMessaging(configuration);
         services.AddBackgroundJobs(connectionString);
         services.AddAuthenticationServices(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddHttpClient(WebhookDeliveryConsumer.HttpClientName, client =>
+            client.Timeout = TimeSpan.FromSeconds(10));
+
+        var rabbitConnectionString = configuration.GetConnectionString(RabbitMqConnectionStringName);
+
+        if (string.IsNullOrWhiteSpace(rabbitConnectionString))
+        {
+            services.AddSingleton<IMessageBusPublisher, NullMessageBusPublisher>();
+            return services;
+        }
+
+        services.AddSingleton<IRabbitMqConnection>(_ => new RabbitMqConnection(rabbitConnectionString));
+        services.AddSingleton<IMessageBusPublisher, RabbitMqPublisher>();
+        services.AddHostedService<WebhookDeliveryConsumer>();
 
         return services;
     }
@@ -84,6 +114,7 @@ public static class DependencyInjection
 
         services.AddScoped<PaymentReminderJob>();
         services.AddScoped<ContractExpiryJob>();
+        services.AddScoped<OutboxPublisherJob>();
 
         return services;
     }

@@ -21,5 +21,10 @@ public static class BackgroundJobScheduler
             ContractExpiryJob.RecurringJobId,
             job => job.RunAsync(CancellationToken.None),
             Cron.Daily());
+
+        recurringJobs.AddOrUpdate<OutboxPublisherJob>(
+            OutboxPublisherJob.RecurringJobId,
+            job => job.RunAsync(CancellationToken.None),
+            Cron.Minutely());
     }
 }

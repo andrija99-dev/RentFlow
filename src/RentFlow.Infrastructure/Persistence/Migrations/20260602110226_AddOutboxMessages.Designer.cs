@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RentFlow.Infrastructure.Persistence;
@@ -12,9 +13,11 @@ using RentFlow.Infrastructure.Persistence;
 namespace RentFlow.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(RentFlowDbContext))]
-    partial class RentFlowDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260602110226_AddOutboxMessages")]
+    partial class AddOutboxMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
