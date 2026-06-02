@@ -57,7 +57,7 @@ internal sealed class WebhookDeliveryConsumer(
             await _channel.QueueBindAsync(
                 MessagingTopology.WebhookQueue,
                 MessagingTopology.EventsExchange,
-                MessagingTopology.WebhookBindingKey,
+                MessagingTopology.AllEventsBindingKey,
                 cancellationToken: stoppingToken).ConfigureAwait(false);
 
             await _channel.BasicQosAsync(0, prefetchCount: 10, global: false, cancellationToken: stoppingToken)

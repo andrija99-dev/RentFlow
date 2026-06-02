@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RentFlow.Application.Abstractions.Caching;
 using RentFlow.Application.Abstractions.Documents;
+using RentFlow.Application.Abstractions.Email;
 using RentFlow.Application.Abstractions.Identity;
 using RentFlow.Application.Abstractions.Reads;
 using RentFlow.Application.Abstractions.Security;
@@ -16,6 +17,7 @@ using RentFlow.Domain.Interfaces;
 using RentFlow.Infrastructure.BackgroundJobs;
 using RentFlow.Infrastructure.Caching;
 using RentFlow.Infrastructure.Documents;
+using RentFlow.Infrastructure.Email;
 using RentFlow.Infrastructure.Identity;
 using RentFlow.Infrastructure.Messaging;
 using RentFlow.Infrastructure.Persistence;
@@ -75,9 +77,26 @@ public static class DependencyInjection
 
         services.AddCaching(configuration);
         services.AddStorage(configuration);
+        services.AddEmail(configuration);
         services.AddMessaging(configuration);
         services.AddBackgroundJobs(connectionString);
         services.AddAuthenticationServices(configuration);
+
+        return services;
+    }
+
+    private static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration configuration)
+    {
+        var emailSection = configuration.GetSection(EmailOptions.SectionName);
+        services.Configure<EmailOptions>(emailSection);
+
+        if (string.IsNullOrWhiteSpace(emailSection[nameof(EmailOptions.Host)]))
+        {
+            services.AddSingleton<IEmailSender, LoggingEmailSender>();
+            return services;
+        }
+
+        services.AddSingleton<IEmailSender, MailKitEmailSender>();
 
         return services;
     }
@@ -98,6 +117,7 @@ public static class DependencyInjection
         services.AddSingleton<IRabbitMqConnection>(_ => new RabbitMqConnection(rabbitConnectionString));
         services.AddSingleton<IMessageBusPublisher, RabbitMqPublisher>();
         services.AddHostedService<WebhookDeliveryConsumer>();
+        services.AddHostedService<ApplicationEmailConsumer>();
 
         return services;
     }
