@@ -13,6 +13,9 @@ internal static class MessagingTopology
     /// <summary>The durable queue the webhook delivery consumer reads from.</summary>
     public const string WebhookQueue = "rentflow.webhooks";
 
-    /// <summary>The binding pattern the webhook queue uses (every event type).</summary>
-    public const string WebhookBindingKey = "#";
+    /// <summary>The durable queue the email notification consumer reads from.</summary>
+    public const string EmailQueue = "rentflow.emails";
+
+    /// <summary>The binding pattern every consumer queue uses (every event type).</summary>
+    public const string AllEventsBindingKey = "#";
 }

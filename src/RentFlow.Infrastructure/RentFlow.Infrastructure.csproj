@@ -25,6 +25,7 @@
     <PackageReference Include="Hangfire.PostgreSql" />
     <PackageReference Include="RabbitMQ.Client" />
     <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="MailKit" />
   </ItemGroup>
 
   <ItemGroup>
