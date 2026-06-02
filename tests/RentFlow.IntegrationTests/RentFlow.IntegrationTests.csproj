@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    Integration tests exercising the API end-to-end against real dependencies
-    (SQL Server, Redis) spun up with Testcontainers. The web-application-factory
-    and Testcontainers packages are added in the feature/testing branch.
+    Integration tests exercising the persistence stack (EF Core write side + Dapper
+    read side) against a real PostgreSQL instance spun up with Testcontainers.
+    Requires a running Docker engine.
   -->
 
   <PropertyGroup>
@@ -16,6 +16,8 @@
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.runner.visualstudio" />
     <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +27,7 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+    <Using Include="Moq" />
   </ItemGroup>
 
 </Project>
