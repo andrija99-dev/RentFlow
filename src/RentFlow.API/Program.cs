@@ -49,7 +49,7 @@ try
     app.UseExceptionHandler();
     app.UseSerilogRequestLogging();
 
-    if (app.Environment.IsDevelopment())
+    if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Test"))
     {
         app.MapOpenApi();
         app.MapScalarApiReference();

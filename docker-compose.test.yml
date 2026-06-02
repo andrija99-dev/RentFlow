@@ -1,0 +1,10 @@
+# Test-environment override. Layer on top of the base compose file:
+#   docker compose -f docker-compose.yml -f docker-compose.test.yml up
+# Runs the API as ASPNETCORE_ENVIRONMENT=Test against an isolated test database;
+# all other services (Redis, RabbitMQ, Azurite, Mailpit) are inherited unchanged.
+
+services:
+  api:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Test
+      ConnectionStrings__RentFlowDb: "Host=postgres;Port=5432;Database=rentflow_test;Username=postgres;Password=postgres"
