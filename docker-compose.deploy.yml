@@ -1,0 +1,4 @@
+services:
+  api:
+    image: ghcr.io/andrija99-dev/rentflow:test
+    pull_policy: always
