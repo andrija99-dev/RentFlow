@@ -1,4 +1,5 @@
 using Hangfire;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using RentFlow.API.Extensions;
 using RentFlow.API.Middleware;
@@ -45,6 +46,14 @@ try
         var recurringJobs = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
         BackgroundJobScheduler.ScheduleRecurringJobs(recurringJobs);
     }
+
+    var forwardedHeadersOptions = new ForwardedHeadersOptions
+    {
+        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+    };
+    forwardedHeadersOptions.KnownIPNetworks.Clear();
+    forwardedHeadersOptions.KnownProxies.Clear();
+    app.UseForwardedHeaders(forwardedHeadersOptions);
 
     app.UseExceptionHandler();
     app.UseSerilogRequestLogging();
