@@ -1,0 +1,6 @@
+services:
+  api:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Test
+      ConnectionStrings__RentFlowDb: "Host=postgres;Port=5432;Database=rentflow_test;Username=postgres;Password=postgres"
+      Jwt__SigningKey: "${JWT_SIGNING_KEY}"

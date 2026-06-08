@@ -1,0 +1,19 @@
+<Project>
+
+  <!-- Inherit the shared properties from the repository root. -->
+  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+
+  <!-- Production projects emit XML documentation. CS1591 (missing doc on a public
+       member) is suppressed so docs are encouraged on public APIs without being mandatory. -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <!-- Expose internal handlers, helpers and infrastructure types to the test projects. -->
+  <ItemGroup>
+    <InternalsVisibleTo Include="RentFlow.UnitTests" />
+    <InternalsVisibleTo Include="RentFlow.IntegrationTests" />
+  </ItemGroup>
+
+</Project>

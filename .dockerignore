@@ -1,0 +1,24 @@
+# Build artifacts
+**/bin/
+**/obj/
+**/out/
+
+# Local runtime output
+**/logs/
+**/document-storage/
+
+# Git / IDE / OS
+.git/
+.gitignore
+.vs/
+.vscode/
+.idea/
+**/*.user
+
+# Tests (not needed for the API image)
+tests/
+
+# Docs / misc
+*.md
+prompt.md
+**/.DS_Store
