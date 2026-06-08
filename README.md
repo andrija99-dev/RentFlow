@@ -5,7 +5,7 @@ A production-quality **real-estate rental platform API** built with ASP.NET Core
 Clean Architecture, CQRS, domain events, the transactional outbox pattern, and a
 fully containerized, CI/CD-driven deployment.
 
-> **Live demo:** https://rentflow.tail07363d.ts.net &nbsp;·&nbsp;
+> **Live demo:**
 > [API docs (Scalar)](https://rentflow.tail07363d.ts.net/scalar/v1) &nbsp;·&nbsp;
 > [Health](https://rentflow.tail07363d.ts.net/health)
 >
