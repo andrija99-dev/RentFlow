@@ -42,7 +42,7 @@ public sealed class WebhookSubscription : AggregateRoot
     public DateTime CreatedAtUtc { get; private set; }
 
     /// <summary>Registers a new active webhook subscription.</summary>
-    /// <exception cref="DomainException">Thrown when the owner, URL or secret is missing or the URL is not absolute.</exception>
+    /// <exception cref="DomainException">Thrown when the owner, URL or secret is missing or the URL is not an absolute http or https URL.</exception>
     public static WebhookSubscription Create(Guid ownerId, string targetUrl, string secret, WebhookEventType eventType)
     {
         if (ownerId == Guid.Empty)
@@ -50,9 +50,9 @@ public sealed class WebhookSubscription : AggregateRoot
             throw new DomainException("A webhook subscription must have an owner.");
         }
 
-        if (!Uri.TryCreate(targetUrl, UriKind.Absolute, out _))
+        if (!IsHttpOrHttpsAbsolute(targetUrl))
         {
-            throw new DomainException("Webhook target URL must be an absolute URL.");
+            throw new DomainException("Webhook target URL must be an absolute http or https URL.");
         }
 
         if (string.IsNullOrWhiteSpace(secret))
@@ -64,16 +64,20 @@ public sealed class WebhookSubscription : AggregateRoot
     }
 
     /// <summary>Updates the delivery URL.</summary>
-    /// <exception cref="DomainException">Thrown when the URL is not absolute.</exception>
+    /// <exception cref="DomainException">Thrown when the URL is not an absolute http or https URL.</exception>
     public void UpdateTargetUrl(string targetUrl)
     {
-        if (!Uri.TryCreate(targetUrl, UriKind.Absolute, out _))
+        if (!IsHttpOrHttpsAbsolute(targetUrl))
         {
-            throw new DomainException("Webhook target URL must be an absolute URL.");
+            throw new DomainException("Webhook target URL must be an absolute http or https URL.");
         }
 
         TargetUrl = targetUrl.Trim();
     }
+
+    private static bool IsHttpOrHttpsAbsolute(string? value) =>
+        Uri.TryCreate(value, UriKind.Absolute, out var uri)
+        && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
 
     /// <summary>Resumes deliveries for the subscription.</summary>
     public void Activate() => IsActive = true;
